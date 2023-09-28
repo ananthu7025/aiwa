@@ -73,9 +73,14 @@ function SelectedSubcategory({ selectedSub }) {
             <h5>ENERGY AND POWER MONITORS</h5>
             <div className="product_grid">
               <div className="product_img">
-                <img
+                {/* <img
                   className="img-fluid"
                   src="https://www.elmeasure.com/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdoqlszv19%2Fimage%2Fupload%2Fv1674707895%2FEDC_2450_036f4274c4.png&w=1920&q=75"
+                  alt=""
+                /> */}
+                <img
+                  className="img-fluid"
+                  src={data?.image}
                   alt=""
                 />
               </div>
@@ -146,16 +151,16 @@ function SelectedSubcategory({ selectedSub }) {
                   {products.map((product) => (
                     <div key={product.id} className="modalbody_grid">
                       <div className="modalbody_item">
-                        {/* <img
-                  className="img-fluid"
-                  src={product.image_url}
-                  alt=""
-                /> */}
                         <img
+                  className="img-fluid"
+                  src={product?.image_url}
+                  alt=""
+                />
+                        {/* <img
                           className="img-fluid"
-                          src="https://www.elmeasure.com/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdoqlszv19%2Fimage%2Fupload%2Fv1674707915%2FEDC_2150_D_f11ddceec7.png&w=2048&q=75"
+                          src={require("../../Screenshot (82).png")}
                           alt=""
-                        />
+                        /> */}
                       </div>
                       <div className="modalbody_item">
                         <h5>{product.name}</h5>

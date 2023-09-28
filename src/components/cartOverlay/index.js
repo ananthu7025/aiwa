@@ -75,8 +75,8 @@ function CartOverlay({ isOpen, onClose }) {
                     <div className="cart_item">
                       <img
                         className="img-fluid"
-                        src={item.image}
-                        alt={item.name}
+                        src={item.item.image_url}
+                        alt={item.item.image_url}
                       />
                     </div>
                     <div className="cart_item">
