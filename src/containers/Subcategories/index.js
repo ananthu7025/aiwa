@@ -82,6 +82,7 @@ function SelectedSubcategory({ selectedSub }) {
                   className="img-fluid"
                   src={data?.image}
                   alt=""
+                  style={{marginTop:"30px"}}
                 />
               </div>
               <div className="product_detail">
