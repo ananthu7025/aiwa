@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 
-const API_BASE_URL = 'https://api-prxi.onrender.com';
+const API_BASE_URL = 'http://localhost:4000';
 
 export const fetchProductsBySubcategory = async (subcategoryId) => {
   try {
