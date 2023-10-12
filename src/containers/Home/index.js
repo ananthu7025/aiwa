@@ -1,152 +1,179 @@
 import React, { useEffect, useState } from 'react';
-import { fetchMainCategories, fetchSubcategoriesByMainCategory,fetchAllSub } from '../../api';
-import { Link } from 'react-router-dom';
-import CartOverlay from '../cartOverlay';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
 
-
-const Header = ({ setSelectedSub }) => {
-    const [scrolled, setScrolled] = useState(false);
-    const [categories, setCategories] = useState([]);
-    const [subcategories, setSubcategories] = useState([]);
-    const [selectedMainCategoryId, setSelectedMainCategoryId] = useState(null);
-    const [isCartOverlayOpen, setIsCartOverlayOpen] = useState(false);
-
+const Home = (setSelectedSub, selectedSub) => {
+    const [isNavScrolled, setNavScrolled] = useState(false);
+    const [isNavOpen, setNavOpen] = useState(false);
+    const toggleNav = () => {
+        setNavOpen(!isNavOpen);
+    };
     useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 30) {
+                setNavScrolled(true);
+            } else {
+                setNavScrolled(false);
+            }
+        };
         window.addEventListener('scroll', handleScroll);
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
-
-    useEffect(() => {
-        fetchMainCategories()
-            .then((data) => {
-                setCategories(data);
-                if (data.length > 0) {
-                    setSelectedMainCategoryId(data[0].id);
-                }
-            })
-            .catch((error) => {
-                console.error('Error fetching main categories:', error);
-            });
-    }, []);
-
-    // useEffect(() => {
-    //     if (selectedMainCategoryId !== null) {
-    //         debugger
-    //         fetchSubcategoriesByMainCategory(selectedMainCategoryId)
-    //             .then((data) => {
-    //                 setSubcategories(data);
-    //             })
-    //             .catch((error) => {
-    //                 console.error('Error fetching subcategories:', error);
-    //             });
-    //     }
-    // }, [selectedMainCategoryId]);
-    useEffect(() => {
-            fetchAllSub()
-                .then((data) => {
-                    setSubcategories(data);
-                })
-                .catch((error) => {
-                    console.error('Error fetching subcategories:', error);
-                });
-    }, [selectedMainCategoryId]);
-    const handleScroll = () => {
-        if (window.pageYOffset > 50) {
-            setScrolled(true);
-        } else {
-            setScrolled(false);
-        }
-    };
-
-    const handleDropdownClick = (mainCategoryId, subcategoryId) => {
-        setSelectedMainCategoryId(mainCategoryId);
-        const selectedSubcategory = subcategories.find((sub) => sub.id === subcategoryId);
-        setSelectedSub(selectedSubcategory)
-    };
-    const openNav = () => {
-        document.getElementById("myNav").style.width = "100%";
-    };
-
-    const closeNav = () => {
-        document.getElementById("myNav").style.width = "0%";
-    };
-
-    console.log(subcategories);
     return (
-    <header>
-    <div className={`fixed-top ${scrolled ? 'scrolled' : ''}`} id="nav__section">
-        <div className="container-fluid">
-            <nav className="navbar navbar-expand-lg navbar-light">
-                <a className="navbar-brand" href="#">
-                    <img className="img-fluid" src={require('../../assests/logo.png')} alt="" srcSet="" />
-                </a>
-                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
-                    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                    <i className="fas fa-bars"></i>
-                </button>
-                <div className="collapse navbar-collapse" id="navbarNavDropdown">
-                    <ul className="navbar-nav mx-auto ml-auto topnav_link">
-                        <li className="nav-item dropdown">
-                            <a className="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                                Products
-                            </a>
-                            <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <div className="dropdown_grid">
-                                    {categories.map(category => (
-                                        <div className="dropdowngrid_item" key={category.id}>
-                                            <h5>{category.name}</h5>
-                                            <div className="strech_line margin"></div>
-                                            {subcategories
-                      .filter((subcategory) => subcategory.main_category_id === category.id)
-                                                .map((subcategory) => (
-                                                    <Link
-                                                        to={`/subcategory/${subcategory.id}`}
-                                                        className="dropdown-item"
-                                                        key={subcategory.id}
-                                                        onClick={() => handleDropdownClick(category.id, subcategory.id)}
-                                                    >
-                                                        {subcategory.name}
-                                                    </Link>
-                                                ))}
+        <div className="Home">
+            <Header selectedSub={selectedSub} setSelectedSub={setSelectedSub} isNavScrolled={isNavScrolled} toggleNav={toggleNav} />
+            <main>
+                <>
+                    <div className="banner_section">
+                        <div
+                            id="carouselExampleIndicators"
+                            className="carousel slide"
+                            data-ride="carousel"
+                        >
+                            <ol className="carousel-indicators">
+                                <li
+                                    data-target="#carouselExampleIndicators"
+                                    data-slide-to={0}
+                                    className="active"
+                                />
+                                <li data-target="#carouselExampleIndicators" data-slide-to={1} />
+                                <li data-target="#carouselExampleIndicators" data-slide-to={2} />
+                            </ol>
+                            <div className="carousel-inner imgsize">
+                                <div className="carousel-item active">
+                                    <div className="bannerimage">
+                                        <img
+                                            className="d-block w-100"
+                                            src="https://www.elmeasure.com/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdoqlszv19%2Fimage%2Fupload%2Fv1670793072%2Fi_Stock_1148233855_7b06faa8ce.jpg&w=3840&q=75"
+                                            alt="First slide"
+                                        />
+                                        <div className="image_text">
+                                            <h1>
+                                                Energy is <span>everything.</span>
+                                            </h1>
+                                            <p>
+                                                We help you manage it with our intelligent energy and process
+                                                management solutions. Explore our suite of products.
+                                            </p>
+                                            <a href="#">GET IN TOUCH</a>
                                         </div>
-                                    ))}
+                                    </div>
+                                </div>
+                                <div className="carousel-item">
+                                    <div className="bannerimage">
+                                        <img
+                                            className="d-block w-100"
+                                            src="https://www.elmeasure.com/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdoqlszv19%2Fimage%2Fupload%2Fv1670793103%2Fi_Stock_1220009869_c25766df09.jpg&w=3840&q=75"
+                                            alt="Second slide"
+                                        />
+                                        <div className="image_text">
+                                            <h1>
+                                                Energy is <span>everything.</span>
+                                            </h1>
+                                            <p>
+                                                We help you manage it with our intelligent energy and process
+                                                management solutions. Explore our suite of products.
+                                            </p>
+                                            <a href="#">GET IN TOUCH</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="carousel-item">
+                                    <div className="bannerimage">
+                                        <img
+                                            className="d-block w-100"
+                                            src="https://www.elmeasure.com/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdoqlszv19%2Fimage%2Fupload%2Fv1670793130%2Fi_Stock_539213388_96c37c4413.jpg&w=3840&q=75"
+                                            alt="Third slide"
+                                        />
+                                        <div className="image_text">
+                                            <h1>
+                                                Energy is <span>everything.</span>
+                                            </h1>
+                                            <p>
+                                                We help you manage it with our intelligent energy and process
+                                                management solutions. Explore our suite of products.
+                                            </p>
+                                            <a href="#">GET IN TOUCH</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="#">About Us</a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="#">Resources</a>
-                        </li>
-                        <li className="nav-item dropdown">
-                            <a className="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                                Tools
-                            </a>
-                            <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <div className="dropdowngrid_item fontweight">
-                                    <a className="dropdown-item" href="#">Partner Portal</a>
-                                    <a className="dropdown-item" href="#">Track Your Shipment</a>
-                                    <a className="dropdown-item" href="#">Product Explorer</a>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                    <div className="cart_icon">
-                        <i className="fas fa-search"></i>
-                        <i className="fas fa-shopping-cart" onClick={openNav}></i>
+
+                        </div>
                     </div>
-                </div>
-            </nav>
+                </>
+
+                <section>
+                    <div className="brands_section">
+                        <div className="brand_inner">
+                            <div className="sqaure"></div>
+                            <h2>
+                                Top global brands <span>trust us and our products</span> to harness
+                                their energy resources.
+                            </h2>
+                        </div>
+                        <div className="brand_image">
+                            <img
+                                src="https://www.elmeasure.com/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdoqlszv19%2Fimage%2Fupload%2Fv1670792649%2Flifestyle_98fd222165.png&w=3840&q=75"
+                                alt=""
+                            />
+                            <img
+                                src="https://www.elmeasure.com/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdoqlszv19%2Fimage%2Fupload%2Fv1670792649%2Fdr_reddys_dad82052af.png&w=3840&q=75"
+                                alt=""
+                                srcSet=""
+                            />
+                            <img
+                                src="https://www.elmeasure.com/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdoqlszv19%2Fimage%2Fupload%2Fv1670792649%2Fab_carter_inc_da8afcff25.png&w=3840&q=75"
+                                alt=""
+                                srcSet=""
+                            />
+                            <img
+                                src="https://www.elmeasure.com/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdoqlszv19%2Fimage%2Fupload%2Fv1670792649%2Fhal_b8c2f99b65.png&w=3840&q=75"
+                                alt=""
+                                srcSet=""
+                            />
+                            <img
+                                src="https://www.elmeasure.com/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdoqlszv19%2Fimage%2Fupload%2Fv1670792649%2Fshalimar_81cbe74646.png&w=3840&q=75"
+                                alt=""
+                                srcSet=""
+                            />
+                            <img
+                                src="https://www.elmeasure.com/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdoqlszv19%2Fimage%2Fupload%2Fv1670792649%2Fcapitaland_d9af1fa578.png&w=3840&q=75"
+                                alt=""
+                                srcSet=""
+                            />
+                        </div>
+                        <div className="reduction_section">
+                            <div className="reduction_item">
+                                <h6>FEATURED CASE STUDY</h6>
+                                <h3>
+                                    13% reduction in <br /> operating costs.
+                                </h3>
+                                <p>
+                                    Energy makes up almost a third of the raw material cost in a textile
+                                    factory. Optimising energy usage can drastically reduce operating
+                                    costs. Find out how we partnered with textile giant Sowmiya Spinners
+                                    to increase factory efficiency.
+                                </p>
+                                <a href="">LEAR MORE</a>
+                            </div>
+                            <div className="reduction_image">
+                                <img
+                                    className="img-fluid"
+                                    src="https://www.elmeasure.com/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdoqlszv19%2Fimage%2Fupload%2Fv1670691473%2Fab_carter_image_5049c17391.png&w=3840&q=75"
+                                    alt=""
+                                    srcSet=""
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+         <Footer/>
         </div>
-    </div>
-    <CartOverlay isOpen={isCartOverlayOpen} onClose={closeNav} />
-</header>
-  )
+    )
 }
 
-export default Header
+export default Home
